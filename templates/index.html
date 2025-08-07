@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>🔥 Compact Calories Burned Predictor</title>
+  <title>🔥 Calories Burnt Predictor</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
     body, html {
@@ -42,7 +42,7 @@
       justify-content: space-between;
     }
     .form-group {
-      flex: 1 1 45%; /* Two columns, 45% width each, flexible */
+      flex: 1 1 45%;
       min-width: 200px;
       display: flex;
       flex-direction: column;
@@ -80,7 +80,7 @@
       user-select: none;
       align-self: center;
       margin-top: 10px;
-      flex: 0 0 auto; /* fix button size */
+      flex: 0 0 auto;
       transition: background-color 0.3s ease, transform 0.2s ease;
     }
     button:disabled {
@@ -113,7 +113,6 @@
       text-shadow: 0 0 6px #721c24;
     }
 
-    /* Responsive: single column on narrow screens */
     @media (max-width: 520px) {
       .form-group {
         flex: 1 1 100%;
@@ -130,112 +129,58 @@
     <form id="calorieForm" action="/" method="POST" novalidate>
       <div class="form-group">
         <label for="Sex">Sex</label>
-        <select id="Sex" name="Sex" required aria-required="true">
-          <option value="" disabled selected>Select Sex</option>
-          <option value="female" {% if form_data and form_data.Sex == 'female' %}selected{% endif %}>Female</option>
-          <option value="male" {% if form_data and form_data.Sex == 'male' %}selected{% endif %}>Male</option>
+        <select id="Sex" name="Sex" required>
+          <option value="" disabled hidden>Select Sex</option>
+          <option value="female">Female</option>
+          <option value="male">Male</option>
         </select>
       </div>
 
       <div class="form-group">
         <label for="Intensity">Intensity</label>
-        <select id="Intensity" name="Intensity" required aria-required="true">
-          <option value="" disabled selected>Select Intensity</option>
-          <option value="Low" {% if form_data and form_data.Intensity == 'Low' %}selected{% endif %}>Low</option>
-          <option value="Medium" {% if form_data and form_data.Intensity == 'Medium' %}selected{% endif %}>Medium</option>
-          <option value="High" {% if form_data and form_data.Intensity == 'High' %}selected{% endif %}>High</option>
+        <select id="Intensity" name="Intensity" required>
+          <option value="" disabled hidden>Select Intensity</option>
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
         </select>
       </div>
 
       <div class="form-group">
         <label for="Age">Age (years)</label>
-        <input
-          type="number"
-          id="Age"
-          name="Age"
-          min="1"
-          max="120"
-          placeholder="e.g. 30"
-          required
-          value="{{ form_data.Age if form_data else '' }}"
-        />
+        <input type="number" id="Age" name="Age" min="1" max="120" placeholder="e.g. 30" required />
       </div>
 
       <div class="form-group">
         <label for="Height">Height (cm)</label>
-        <input
-          type="number"
-          id="Height"
-          name="Height"
-          min="50"
-          max="250"
-          placeholder="e.g. 175"
-          required
-          value="{{ form_data.Height if form_data else '' }}"
-        />
+        <input type="number" id="Height" name="Height" min="50" max="250" placeholder="e.g. 175" required />
       </div>
 
       <div class="form-group">
         <label for="Weight">Weight (kg)</label>
-        <input
-          type="number"
-          id="Weight"
-          name="Weight"
-          min="10"
-          max="300"
-          placeholder="e.g. 70"
-          required
-          value="{{ form_data.Weight if form_data else '' }}"
-        />
+        <input type="number" id="Weight" name="Weight" min="10" max="300" placeholder="e.g. 70" required />
       </div>
 
       <div class="form-group">
         <label for="Duration">Duration (minutes)</label>
-        <input
-          type="number"
-          id="Duration"
-          name="Duration"
-          min="1"
-          max="300"
-          placeholder="e.g. 45"
-          required
-          value="{{ form_data.Duration if form_data else '' }}"
-        />
+        <input type="number" id="Duration" name="Duration" min="1" max="300" placeholder="e.g. 45" required />
       </div>
 
       <div class="form-group">
         <label for="Heart_Rate">Heart Rate (bpm)</label>
-        <input
-          type="number"
-          id="Heart_Rate"
-          name="Heart_Rate"
-          min="40"
-          max="220"
-          placeholder="e.g. 130"
-          required
-          value="{{ form_data.Heart_Rate if form_data else '' }}"
-        />
+        <input type="number" id="Heart_Rate" name="Heart_Rate" min="40" max="220" placeholder="e.g. 130" required />
       </div>
 
       <div class="form-group">
         <label for="Body_Temp">Body Temperature (°C)</label>
-        <input
-          type="number"
-          step="0.1"
-          id="Body_Temp"
-          name="Body_Temp"
-          min="35"
-          max="42"
-          placeholder="e.g. 37.0"
-          required
-          value="{{ form_data.Body_Temp if form_data else '' }}"
-        />
+        <input type="number" step="0.1" id="Body_Temp" name="Body_Temp" min="20" max="100" placeholder="e.g. 37.0" required />
       </div>
 
       <button type="submit" id="submitBtn" disabled>Predict Calories</button>
     </form>
 
     <div id="messageContainer" aria-live="polite" style="min-height: 60px;">
+      <!-- These sections are meant for server-side templating -->
       {% if prediction %}
         <div class="result" role="alert">
           🔥 Estimated Calories Burned: <strong>{{ prediction }}</strong> kcal
@@ -247,38 +192,42 @@
         </div>
       {% endif %}
     </div>
+
+    <div style="text-align: center; margin-top: 30px;">
+      <a href="https://public.tableau.com/views/CalorieBurntAnalysis/Dashboard1?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link"
+         class="btn btn-outline-info"
+         target="_blank"
+         role="button"
+         style="text-decoration: none; font-weight: bold;">
+        📊 View Calorie Burn Analysis Dashboard
+      </a>
+    </div>
   </div>
 
+  <!-- ✅ JavaScript: Enables the Predict button only when the form is valid -->
   <script>
     (() => {
       const form = document.getElementById('calorieForm');
       const submitBtn = document.getElementById('submitBtn');
       const inputs = form.querySelectorAll('input, select');
 
-      // Enable submit only if form is valid
-      function validateForm() {
-        let valid = true;
+      function checkFormValidity() {
+        let allValid = true;
         inputs.forEach(input => {
-          if (!input.checkValidity()) valid = false;
+          if (!input.checkValidity()) {
+            allValid = false;
+          }
         });
-        submitBtn.disabled = !valid;
+        submitBtn.disabled = !allValid;
       }
 
       inputs.forEach(input => {
-        input.addEventListener('input', validateForm);
-        input.addEventListener('change', validateForm);
+        input.addEventListener('input', checkFormValidity);
+        input.addEventListener('change', checkFormValidity);
       });
 
-      // Validate on page load
-      validateForm();
-
-      // Scroll to result on submit
-      form.addEventListener('submit', () => {
-        setTimeout(() => {
-          const msg = document.getElementById('messageContainer');
-          if (msg) msg.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-      });
+      // Run on page load
+      checkFormValidity();
     })();
   </script>
 </body>
